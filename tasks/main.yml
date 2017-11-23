@@ -1,0 +1,20 @@
+- name: Determine ALB facts
+  elb_application_lb_facts:
+    profile: "{{ profile|default(omit) }}"
+    region: "{{ region }}"
+    names: "{{ load_balancer_name }}"
+  register: elb_application_lb_facts
+
+- name: Point DNS at ALBs
+  route53:
+    private_zone: no
+    command: create
+    zone: "{{ tld_name_external }}"
+    record: "{{ role_type }}.{{ tld_name_external }}"
+    value: "{{ elb_application_lb_facts.load_balancers[0].dns_name }}"
+    type: CNAME
+    ttl: 300
+    overwrite: yes
+    retry_interval: 5
+    profile: "{{ profile|default(omit) }}"
+  when: target_groups
