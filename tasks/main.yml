@@ -6,15 +6,15 @@
   register: elb_application_lb_facts
 
 - name: Point DNS at ALBs
-  route53:
-    private_zone: no
-    command: create
-    zone: "{{ tld_name_external }}"
-    record: "{{ role_type }}.{{ tld_name_external }}"
-    value: "{{ elb_application_lb_facts.load_balancers[0].dns_name }}"
-    type: CNAME
-    ttl: 300
-    overwrite: yes
-    retry_interval: 5
-    profile: "{{ profile|default(omit) }}"
+  include_role:
+    name: aws_route53
+  vars:
+    aws_route53_profile: "{{  aws_route53_profile_public|default(profile|default()) }}"
+    aws_route53:
+      private_zone: no
+      zone: "{{ tld_name_external }}"
+      record: "{{ role_type }}.{{ tld_name_external }}"
+      value: "{{ elb_application_lb_facts.load_balancers[0].dns_name }}"
+      type: CNAME
+
   when: target_groups
