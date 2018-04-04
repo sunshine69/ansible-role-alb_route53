@@ -1,0 +1,1 @@
+alb_route53_dns: "{{ role_type|default('ERROR') }}.{{ tld_name_external|default('ERROR') }}"
