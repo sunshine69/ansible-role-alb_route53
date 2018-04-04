@@ -1,0 +1,1 @@
+alb_route53_dns: "{{ role_type }}.{{ tld_name_external }}"

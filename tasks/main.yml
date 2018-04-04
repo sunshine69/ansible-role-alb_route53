@@ -13,7 +13,7 @@
     aws_route53:
       private_zone: no
       zone: "{{ tld_name_external }}"
-      record: "{{ alb_route53_dns|default(role_type + '.' + tld_name_external) }}"
+      record: "{{ alb_route53_dns }}"
       value: "{{ elb_application_lb_facts.load_balancers[0].dns_name }}"
       type: CNAME
 
