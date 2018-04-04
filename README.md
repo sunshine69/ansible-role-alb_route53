@@ -12,14 +12,21 @@ aws_profile_account - ssh://git@bitbucket.xvt.technology:7999/xans/aws_profile_a
 
 Role Variables
 --------------
-`load_balancer_name` - required - no default
- The load_balancer_name to create DNS for
+- `load_balancer_name` - required - no default
+  The load_balancer_name to create DNS for
 
-`aws_route53_profile_public` - optional - no default
- The aws profile that we are going to create the public route53 entry. If not provided then fall back to use IAM profile. See https://bitbucket.xvt.technology/projects/XANS/repos/aws_route53/browse for more.
- 
-`tld_name_external` - the public zone name 
-`role_type` - role type 
+- `aws_route53_profile_public` - optional - no default
+  The aws profile that we are going to create the public route53 entry. If not
+  provided then fall back to use IAM profile. See
+  https://bitbucket.xvt.technology/projects/XANS/repos/aws_route53/browse for
+  more.
+
+- `alb_route53_dns` - Optional - Default: `role_type`.`tld_name_external`
+  The dns record that this role is going to create and will have the value of the `load_balancer_name`.`domain_name`.
+
+- `tld_name_external` - the public zone name.
+
+- `role_type` - role type - required if `alb_route53_dns` is not provided.
 
 The DNS will be created as a CNAME of the alb and the value is <role_type>.<tld_name_external>
 
@@ -29,7 +36,7 @@ Dependencies
 role: aws_route53
       to do the actual route53 request
 
-role: aws_profile_account 
+role: aws_profile_account
       to handle the case when we are running in ec2 which has the IAM profile
       that can assume the target route53_admin IAM role in the aws account that
       we create the entry.
