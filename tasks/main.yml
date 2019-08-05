@@ -17,4 +17,4 @@
       value: "{{ elb_application_lb_facts.load_balancers[0].dns_name }}"
       type: CNAME
   with_items: "{{ alb_route53_dnses|default([alb_route53_dns]) }}"
-  when: target_groups
+  when: target_groups is defined and target_groups.keys()|length > 0
