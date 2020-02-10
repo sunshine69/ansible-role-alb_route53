@@ -1,5 +1,5 @@
 - name: Determine ALB facts
-  elb_application_lb_facts:
+  elb_application_lb_info:
     profile: "{{ profile|default(omit) }}"
     region: "{{ region }}"
     names: "{{ load_balancer_name }}"
